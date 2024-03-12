@@ -12,24 +12,32 @@ datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
 }
-
 model User {
-  id       Int          @id @default(autoincrement())
-  email    String       @unique
-  username     String?
-  password String       @unique
-  groupsCreated Group[] @relation("UserGroup")
-  groups   Group[]      @relation("UsersInGroup")
+  id            Int      @id @default(autoincrement())
+  email         String   @unique
+  username      String?
+  password      String   @unique
+  userDeaths    UserDeath[] 
+  groupsCreated Group[]  @relation("UserGroup")
+  groups        Group[]  
 }
 
 model Group {
-  id           Int        @id @default(autoincrement())
-  name         String
-  createdBy    User       @relation(fields: [createdById], references: [id], name:"UserGroup")
-  createdById  Int        
-  members      User[] @relation("UsersInGroup")
-  deaths Int @default(0)
-  createdAt DateTime @default(now())
+  id          Int         @id @default(autoincrement()) 
+  name        String      @unique 
+  password    String
+  createdBy   User        @relation(fields: [createdById], references: [id], name: "UserGroup")
+  createdById Int
+  members     User[]      
+  createdAt   DateTime    @default(now())
+  userDeaths  UserDeath[] @relation("GroupDeaths")
 }
 
-
+model UserDeath {
+  id       Int     @id @default(autoincrement())
+  user     User    @relation(fields: [userId], references: [id])
+  userId   Int
+  group    Group   @relation(fields: [groupId], references: [id], name: "GroupDeaths")
+  groupId  Int
+  deaths   Int     @default(0) 
+}

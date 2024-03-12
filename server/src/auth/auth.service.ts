@@ -4,13 +4,14 @@ import { User, authUser } from './dto/auth.dto';
 import { hash } from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { compareHash } from './utils/handleBcrypt';
+import { Response } from 'express';
 
 @Injectable()
 export class AuthService {
 
   constructor(private prisma: PrismaService, private jwtService: JwtService) { }
 
-  async createUser(newUser: authUser) {
+  async createUser(newUser: authUser) { 
 
     const { email, password } = newUser
 
@@ -32,7 +33,7 @@ export class AuthService {
       data: {
         email: newUser.email,
         password: newUser.password,
-        username: newUser.password
+        username: newUser.username
       }
     })
 
@@ -54,7 +55,9 @@ export class AuthService {
 
   }
 
-  async loginUser(user: User) {
+  async loginUser(user: User,  res: Response) {
+
+
 
     const { email, password } = user
 
@@ -75,13 +78,15 @@ export class AuthService {
 
       const payload = { id: findUser.id, name: findUser.username }
       const token = this.jwtService.sign(payload)
-  
-      const data = {
-        user: findUser,
-        token
-      }
 
-    return data;
+      res.cookie('token', token, {
+        sameSite: 'lax',
+        httpOnly: true
+      });
+  
+    return token;
 
   }
+
+
 }
