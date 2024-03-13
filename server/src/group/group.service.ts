@@ -1,6 +1,6 @@
 import { HttpException, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { GroupDto, type MembersData, ParamDto, Token } from './dto/group.dto';
+import { GroupDto, type MembersData, ParamDto, Token, DataDto } from './dto/group.dto';
 import { hash } from 'bcrypt';
 import { Request } from 'express';
 import * as jwt from 'jsonwebtoken';
@@ -94,7 +94,6 @@ export class GroupService {
     }
 
     async groupInfo(req: Request, param: ParamDto) {
-        console.log(param)
 
         const group = await this.prisma.group.findFirst({
             where: {
@@ -112,7 +111,7 @@ export class GroupService {
         })
 
 
-        let members: MembersData[] = []
+        const members: MembersData[] = []
 
         group.members.forEach((member) => {
 
@@ -137,6 +136,42 @@ export class GroupService {
         };
 
         return data
+
+    }
+
+    async myGroupsInfo(req: Request){
+
+        const token = req.headers.authorization.split(' ')[1]
+        const decodedToken = jwt.decode(token) as Token
+
+        const groups = await this.prisma.group.findMany({
+            where:{
+                members: { every: { id: decodedToken.id } }
+            },
+            include:{
+                createdBy: true
+            }
+        })
+
+        const data: DataDto[] = []
+        
+        groups.forEach((groupData) => {
+
+            console.log(groupData)
+
+            const newData = {
+                name: groupData.name,
+                createdAt: groupData.createdAt,
+                createdBy: groupData.createdBy.username
+            }
+
+            data.push(newData)
+
+        });
+
+
+        return data
+
 
     }
 

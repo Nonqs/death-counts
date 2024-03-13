@@ -30,7 +30,7 @@ export class GroupController {
     @UseGuards(JwtAuthGuard)
     @Get()
     myGroups(@Req() req: Request){
-        
+        return this.groupService.myGroupsInfo(req)
     }
 
     @UseGuards(JwtAuthGuard)

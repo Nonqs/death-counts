@@ -20,3 +20,9 @@ export class MembersData {
     name: string
     deaths: number
 }
+
+export class DataDto {
+    name: string
+    createdAt: Date
+    createdBy: string
+}
