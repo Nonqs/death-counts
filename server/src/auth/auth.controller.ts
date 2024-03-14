@@ -9,9 +9,9 @@ export class AuthController {
     constructor(private authService: AuthService) { }
 
     @Post("register")
-    registerUser(@Body() newUser: authUser) {
+    registerUser(@Body() newUser: authUser,  @Res({ passthrough: true }) res: Response) {
 
-        return this.authService.createUser(newUser)
+        return this.authService.createUser(newUser, res)
 
     }
 

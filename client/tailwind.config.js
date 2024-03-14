@@ -18,9 +18,6 @@ module.exports = {
     },
     extend: {
       colors: {
-        backgroundImage: {
-          'hero-pattern': "url('/public/elden.jpg')",
-        },
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",

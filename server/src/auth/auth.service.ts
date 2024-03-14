@@ -11,7 +11,7 @@ export class AuthService {
 
   constructor(private prisma: PrismaService, private jwtService: JwtService) { }
 
-  async createUser(newUser: authUser) { 
+  async createUser(newUser: authUser, res: Response) { 
 
     const { email, password } = newUser
 
@@ -50,6 +50,10 @@ export class AuthService {
       user: user,
       token
     }
+    res.cookie('token', token, {
+      sameSite: 'lax',
+      httpOnly: true
+    });
 
     return data
 
