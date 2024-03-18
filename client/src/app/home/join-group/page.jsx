@@ -5,7 +5,7 @@ import axios from "axios"
 import { Button } from "@/components/ui/button"
 import { useRouter } from "next/navigation"
 
-export default function CreatePage() {
+export default function JoinPage() {
 
     const router = useRouter()
 
@@ -18,7 +18,7 @@ export default function CreatePage() {
 
         try {
 
-            const res = axios.post("http://localhost:3000/group/create", {
+            const res = axios.post("http://localhost:3000/group/join", {
                 name,
                 password
             }, {
@@ -62,7 +62,7 @@ export default function CreatePage() {
                             variant="outline"
                             className="text-black font-semibold h-1/10 mt-4"
                         >
-                            Create
+                            Join
                         </Button>
                     </div>
                 </div>

@@ -158,8 +158,6 @@ export class GroupService {
         })
 
         const data: DataDto[] = []
-
-        console.log(groups)
         
         groups.forEach((groupData) => {
 
@@ -178,8 +176,6 @@ export class GroupService {
             user,
             data
         }
-
-        console.log(allData)
         
         return allData
 
@@ -193,8 +189,9 @@ export class GroupService {
                 name: param.groupName
             }
         })
-
+        
         const token = req.headers.authorization.split(' ')[1]
+        
         const decodedToken = jwt.decode(token) as Token
 
         const currentUserDeath = await this.prisma.userDeath.findFirst({
@@ -203,6 +200,8 @@ export class GroupService {
                 groupId: findGroup.id
             }
         })
+
+        console.log(currentUserDeath)
 
         const registerDeath = await this.prisma.userDeath.update({
             where: {

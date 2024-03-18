@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Patch, Post, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch, Post, Put, Req, UseGuards } from '@nestjs/common';
 import { GroupDto, ParamDto } from './dto/group.dto';
 import { Request } from 'express';
 import { GroupService } from './group.service';
