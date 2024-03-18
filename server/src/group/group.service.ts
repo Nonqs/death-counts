@@ -135,6 +135,8 @@ export class GroupService {
             members: members
         };
 
+        console.log(data)
+
         return data
 
     }
@@ -144,9 +146,11 @@ export class GroupService {
         const token = req.headers.authorization.split(' ')[1]
         const decodedToken = jwt.decode(token) as Token
 
+        const user = decodedToken.name
+
         const groups = await this.prisma.group.findMany({
             where:{
-                members: { every: { id: decodedToken.id } }
+                members: { some: { id: decodedToken.id } }
             },
             include:{
                 createdBy: true
@@ -154,10 +158,10 @@ export class GroupService {
         })
 
         const data: DataDto[] = []
+
+        console.log(groups)
         
         groups.forEach((groupData) => {
-
-            console.log(groupData)
 
             const newData = {
                 name: groupData.name,
@@ -165,12 +169,19 @@ export class GroupService {
                 createdBy: groupData.createdBy.username
             }
 
+            
             data.push(newData)
 
         });
 
+        const allData = {
+            user,
+            data
+        }
 
-        return data
+        console.log(allData)
+        
+        return allData
 
 
     }
