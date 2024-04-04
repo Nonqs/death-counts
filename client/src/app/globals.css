@@ -66,6 +66,8 @@
   }
 }
  
+
+
 @layer base {
   * {
     @apply border-border;
@@ -73,5 +75,6 @@
   body {
     @apply bg-background text-foreground;
     background: #000;
+    font-family: 'Marcellus', sans-serif;
   }
 }
